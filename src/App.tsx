@@ -52,7 +52,7 @@ function App() {
 
         const prompt = `here is a CSV file containing feedback from multiple employees: ${csv}.
         
-        Extract the following pieces of data from each line: ${desiredData}.`
+        Extract the following pieces of data from each line: ${desiredData}. Make sure the employee feedback text is formatted cleanly and does not contain any out of place characters.`
         const result = await model.generateContent(prompt);
         setFeedback(JSON.parse(result.response.text())) 
 
@@ -60,6 +60,7 @@ function App() {
   }
   void fetchData()
   })
+  console.log(feedback)
 
   return (
     <>
