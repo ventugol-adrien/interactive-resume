@@ -3,13 +3,11 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 import { GoogleGenerativeAI, SchemaType  } from '@google/generative-ai'
-import AnimatedText from './components/AnimatedText'
 import { Feedback } from './assets/Feedback'
 import { Feedbacks } from './types'
 
 function App() {
   const [count, setCount] = useState(0)
-  const [generatedText, setGeneratedText] = useState("Loading LLM Response...")
   const [feedback, setFeedback] = useState<Feedbacks[]>()
   const desiredData = "feedback_date, employee_name, feedback"
 
@@ -61,7 +59,7 @@ function App() {
     }
   }
   void fetchData()
-  },[])
+  })
 
   return (
     <>

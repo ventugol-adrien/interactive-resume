@@ -1,5 +1,3 @@
-import { promises as fs } from 'fs'; // Explicitly import the promises API
-
 async function readCsvFile(filePath: string): Promise<string> {
   try {
     const fileContent = await fetch(filePath);
