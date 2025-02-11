@@ -1,0 +1,16 @@
+
+.animated-text {
+    display: inline-block;
+    white-space: pre-wrap; /* Preserve whitespace and line breaks */
+  }
+  
+  .cursor {
+    animation: blink 1s infinite step-start; /* Cursor blinking animation */
+    display: inline-block; /* Ensure cursor is on the same line */
+  }
+  
+  @keyframes blink {
+    50% {
+      opacity: 0;
+    }
+  }
