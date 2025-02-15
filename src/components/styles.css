@@ -2,11 +2,35 @@
 .animated-text {
     display: inline-block;
     white-space: pre-wrap; /* Preserve whitespace and line breaks */
+    overflow-y: scroll;
+    scrollbar-width: none; /* Hide scrollbar */
+    max-height: 12em;
+    min-height: 4em;
   }
   
   .cursor {
     animation: blink 1s infinite step-start; /* Cursor blinking animation */
     display: inline-block; /* Ensure cursor is on the same line */
+  }
+  .card {
+    padding: 0em 2em 1.5em 2em;
+    border-radius: 4em;
+    border: #fff solid 1px;
+    width: 500px;
+    box-shadow: #fff 3px 3px 2px;
+  }
+
+  .cardTitle {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #fff;
+    border-bottom: #fff solid 1px;
+    padding: 1px;
+  }
+
+  .placeholder {
+    color: #777777;
+    font-size: 1em;
   }
   
   @keyframes blink {

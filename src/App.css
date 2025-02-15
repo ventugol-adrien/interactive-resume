@@ -52,9 +52,13 @@
   from, to { border-color: transparent }
   50% { border-color: orange; } 
 }
-
-.card {
-  padding: 2em;
+.disclaimer {
+  font-size: 0.8em;
+  color: #888;
+}
+.logo {
+  height: 6em;
+  padding: 1.5em;
 }
 
 .read-the-docs {
