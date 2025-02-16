@@ -16,9 +16,11 @@ export const ChatCard: React.FC<ChatCardProps> = (props) => {
         setInput(e.target.value)
     }
     const ask = async () => {
+        console.log("Asking...")
         setResponse("Generating response...")
+        const llminput = input
         setInput("")
-        const llm_response = await clickHandler(input)
+        const llm_response = await clickHandler(llminput)
         setResponse(llm_response)
 
     }
@@ -29,7 +31,7 @@ export const ChatCard: React.FC<ChatCardProps> = (props) => {
             <h2 className="cardTitle">{title}</h2>
             {response ? <AnimatedText text={response} /> : <p className="placeholder"> {placeholder}</p>}
             <span style={{ display: "flex", flexDirection: "row",height: "25px", width: "100%", justifyContent: "space-between", alignItems: "center", padding: "10px", borderTop: "1px solid #e0e0e0" }}>
-            <input style={{width: '80%', height:'100%', borderRadius: "4em", borderColor: "transparent"}} type="text" value={input} onChange={handleInput} /><button onClick={ask} >Ask</button>
+            <input style={{width: '80%', height:'100%', borderRadius: "4em", borderColor: "transparent", padding:"5px"}} type="text" value={input} onChange={handleInput} /><button onClick={ask} >Ask</button>
             </span>
         </div>
     )
