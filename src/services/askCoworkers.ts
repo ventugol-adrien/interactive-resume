@@ -2,6 +2,7 @@ import { SchemaType, GoogleGenerativeAI } from "@google/generative-ai";
 import { FeedbackJSON } from "../assets/Feedback";
 
 export const askCoworkers = async (input:string):Promise<string> => {
+    const baseURL = import.meta.env.VITE_SERVER_URL
     const schema = {
         description: "Theme of the question",
         type: SchemaType.OBJECT,
@@ -16,7 +17,6 @@ export const askCoworkers = async (input:string):Promise<string> => {
         nullable: false
     }
           if (import.meta.env.VITE_GEMINI_API_KEY && input) {
-              console.log("Asking coworkers the following question:", input)
               const themeAnalyzer = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY);
               const model1 = themeAnalyzer.getGenerativeModel({ model: "gemini-1.5-flash",generationConfig:{responseMimeType:"application/json",responseSchema:schema}, systemInstruction: "Your role is to analyze a question given by a user about an engineer. Analyze the broad theme of the question given by the asker in term of the what abilities it concerns. Return the theme of the question in a maximum of 3 words." });
               const themePrompt = ` a user is asking the following questions about the engineer:${input}
@@ -27,7 +27,7 @@ export const askCoworkers = async (input:string):Promise<string> => {
               Example: "How does the engineer handle difficult situations?" -> "Interpersonal skills"`
               const themeResponse = await model1.generateContent(themePrompt)
               const theme = JSON.parse(themeResponse.response.text()).theme
-              fetch('http://localhost:3001/spreadsheet/update', {
+              fetch(`${baseURL}/spreadsheet/update`, {
                   method: 'PUT',
                   headers: {
                       'Content-Type': 'application/json',
