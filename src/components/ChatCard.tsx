@@ -24,7 +24,7 @@ export const ChatCard: React.FC<ChatCardProps> = (props) => {
             setResponse("Generating response...")
             const llminput = input
             setInput("")
-            const llm_response = await clickHandler(llminput,props.id,props.context)
+            const llm_response = await clickHandler(llminput)
             setResponse(llm_response)
         } else {
             setResponse("Please ask a question.")

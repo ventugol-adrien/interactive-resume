@@ -16,7 +16,7 @@ export const Resume: React.FC<ResumeProps> = ({ job, id }) => {
                     <a className="jobTitle" href={job.link}>{` ${job.title} `}</a>
                     <p>position. Get insight into what he would bring to </p>
                     <p className="company">{job.company}</p>
-                    <p> , according to former colleagues' feedback.</p>
+                    <p>, according to former colleagues' feedback.</p>
                 </div>
             ) : (
                 <p>Ask directly about Adrien Ventugol's experience and skills. Get insight into what working with him is like, according to former colleagues' feedback.</p>
