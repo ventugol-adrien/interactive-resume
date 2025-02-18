@@ -7,22 +7,36 @@ interface AnimatedTextProps {
 
 const AnimatedText: React.FC<AnimatedTextProps> = ({ text }) => {
   const [displayedText, setDisplayedText] = useState('');
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const currentIndexRef = useRef(0);
   const scrollableDivRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      if (currentIndex < text.length) {
-        setDisplayedText(text.substring(0, currentIndex + 1));
-        setCurrentIndex(currentIndex + 1);
+    console.log("Text changed. Resetting index and displayed text.")
+    const textArray = text.split('');
+    currentIndexRef.current = 0;
+    setDisplayedText(textArray[currentIndexRef.current]);
+
+    const appendText = () =>{
+      if (currentIndexRef.current < textArray.length-1) {
+        console.log("Appending text:", currentIndexRef.current, textArray.length, textArray[currentIndexRef.current], currentIndexRef.current+1)
+        setDisplayedText((prev) => prev + textArray[currentIndexRef.current]);
+        currentIndexRef.current += 1;
         if (scrollableDivRef.current) {
           scrollableDivRef.current.scrollTop = scrollableDivRef.current.scrollHeight;
         }
       }
-    }, 20);
-
-    return () => clearTimeout(timer);
-  }, [text, currentIndex]);
+    }
+    if (currentIndexRef.current < textArray.length) {
+      console.log("There is text left. appending...", currentIndexRef.current, textArray.length)
+      const interval = setInterval(appendText, 20);
+      return () => clearInterval(interval);
+  } else {
+    console.log("No text left.")
+    return
+  }
+    
+    
+  }, [text]);
 
   return (
     <div className="animated-text" scroll-behavior="smooth" ref={scrollableDivRef}>
