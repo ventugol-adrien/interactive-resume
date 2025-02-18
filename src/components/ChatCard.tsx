@@ -16,12 +16,16 @@ export const ChatCard: React.FC<ChatCardProps> = (props) => {
         setInput(e.target.value)
     }
     const ask = async () => {
-        console.log("Asking...")
-        setResponse("Generating response...")
-        const llminput = input
-        setInput("")
-        const llm_response = await clickHandler(llminput)
-        setResponse(llm_response)
+        if (input){
+            console.log("Asking...")
+            setResponse("Generating response...")
+            const llminput = input
+            setInput("")
+            const llm_response = await clickHandler(llminput)
+            setResponse(llm_response)
+        } else {
+            setResponse("Please ask a question.")
+        }
 
     }
         
