@@ -6,15 +6,17 @@ interface TestInterface {
     name: string,
     age: number,
     isActive: boolean,
-    tags: string[],
+    tags?: string[],
 }
 
 const makeTestInterface = () => {
-    return {name: "",
-    age: 0,
-    isActive: false,
- }
-}
+    return {
+        name: "",
+        age: 0,
+        isActive: false,
+        tags: [],
+    };
+};
 
 describe('generateSchema', () => {
     it('should generate a schema with correct properties and types', () => {
