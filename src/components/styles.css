@@ -28,6 +28,10 @@
     padding: 1px;
   }
 
+  button {
+    border: 1px solid;
+  }
+
   .placeholder {
     color: #777777;
     font-size: 1em;
