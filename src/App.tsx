@@ -1,9 +1,33 @@
 import logo from './assets/logo.png'
 import './App.css'
-import { ChatCard } from './components/ChatCard'
-import { askCoworkers } from './services/askCoworkers'
+import { getJob } from './services/getJob'
+import { Resume } from './components/Resume'
+import { Job } from './types'
+import { memo, useEffect, useState } from 'react'
+import { BrowserRouter, Route, Routes, useParams } from 'react-router-dom'
 
-function App() {
+const App:React.FC = () => {
+  const [job, setJob] = useState<Job | null>(null)
+  
+  const JobFetcher: React.FC = () => {
+    const { id } = useParams<{ id: string }>()
+    useEffect(() => {
+      const fetchJob = async (id: string) => {
+        if (!job) {
+          console.log("Here is the id:", id)
+          const fetchedJob: Job = await getJob(id)
+          setJob(fetchedJob)
+        }
+
+      }
+
+      id ? fetchJob(id) : null
+    },[job])
+
+    return <Resume job={job || undefined} id={id} />
+  }
+
+  const MemoizedJobFetcher = memo(JobFetcher)
   
 
   return (
@@ -11,12 +35,12 @@ function App() {
       <div>
         <img className='logo' src={logo} alt=" Interactive Resume Logo" />
       </div>
-      <h1>Interactive Resume</h1>
-      <p> In this app you can ask directly about Adrien Ventugol's experience and skills, as well as get insight into what working with him is like based on feedback from former colleagues.</p>
-      <p className='disclaimer'>By using this application, you agree to your question potentially being recorded for self-improvement purposes.</p>
-      <div>
-        <ChatCard title="Ask Adrien's coworkers" clickHandler={askCoworkers} placeholder="Get an answer to your question based on feedback from Adrien's former team."/>
-      </div>
+      <BrowserRouter basename={import.meta.env.BASE_URL}>
+        <Routes>
+          <Route path="/:id" element={<MemoizedJobFetcher/>}/>
+          <Route path="/" element={<MemoizedJobFetcher/>}/>
+        </Routes>
+      </BrowserRouter>
     </>
   )
 }

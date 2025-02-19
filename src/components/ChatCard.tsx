@@ -2,9 +2,12 @@ import { useState } from "react"
 import AnimatedText from "./AnimatedText"
 
 interface ChatCardProps {
+
     title: string
     placeholder?: string
-    clickHandler: (input:string) => Promise<string>
+    id?:string
+    context?: string[]
+    clickHandler: (input:string, id?:string, context?:string[]) => Promise<string>
 }
 
 export const ChatCard: React.FC<ChatCardProps> = (props) => {
@@ -21,7 +24,7 @@ export const ChatCard: React.FC<ChatCardProps> = (props) => {
             setResponse("Generating response...")
             const llminput = input
             setInput("")
-            const llm_response = await clickHandler(llminput)
+            const llm_response = await clickHandler(llminput,props.id,props.context)
             setResponse(llm_response)
         } else {
             setResponse("Please ask a question.")

@@ -8,7 +8,7 @@ export default defineConfig({
     minify: true,
   },
   server: {
-    allowedHosts: ["interactive-resume-963898814835.europe-west1.run.app"],
+    allowedHosts: ["interactive-resume-963898814835.europe-west1.run.app","localhost"],
     host: '0.0.0.0',
     port: 8080
   }
