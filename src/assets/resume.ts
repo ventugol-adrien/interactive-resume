@@ -56,23 +56,6 @@ export const resume: Resume = {
             ],
         },
     ],
-    education: {
-        degree: "BSc in Computer Science",
-        institution: "New York University",
-    },
-    awards: [
-        {
-            name: "Outstanding Contributor Award",
-            authority: "Workday",
-            description: "Received for the implementation of Workday's first Payroll AI Recommendations."
-        },
-        {
-            name: "Al Hackathon Runner-up",
-            authority: "Workday",
-            description:
-                "Recruited and led a team of engineers in the creation of a Payroll Language Assistant Tool, PLATO, capable of explaining complex Payroll concepts and calculations in great details to both domain experts and average users.",
-        },
-    ],
     projects: [
         {
             higlights: [
@@ -92,7 +75,24 @@ export const resume: Resume = {
                 "Deployed app on Google Cloud Platform, with the frontend being deployed using Docker.",
                 
             ],
-            link:"You're looking at it!!!"
+            link:"https://interactive-resume-963898814835.europe-west1.run.app"
+        },
+    ],
+    education: {
+        degree: "BSc in Computer Science",
+        institution: "New York University",
+    },
+    awards: [
+        {
+            name: "Outstanding Contributor Award",
+            authority: "Workday",
+            description: "Received for the implementation of Workday's first Payroll AI Recommendations."
+        },
+        {
+            name: "Al Hackathon Runner-up",
+            authority: "Workday",
+            description:
+                "Recruited and led a team of engineers in the creation of a Payroll Language Assistant Tool, PLATO, capable of explaining complex Payroll concepts and calculations in great details to both domain experts and average users.",
         },
     ],
 }

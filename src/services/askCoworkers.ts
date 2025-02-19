@@ -1,9 +1,11 @@
 import { SchemaType, GoogleGenerativeAI } from "@google/generative-ai";
 import { FeedbackJSON } from "../assets/Feedback";
+import { Resume } from "../types";
 
 export const askCoworkers = async (input:string, id?:string, context?:string[]):Promise<string> => {
     const serverURL = import.meta.env.VITE_SERVER_URL
     const resume = import.meta.env.VITE_RESUME
+    const projects = JSON.stringify(JSON.parse(resume) as Resume["projects"])
     const schema = {
         description: "Theme of the question",
         type: SchemaType.OBJECT,
@@ -44,6 +46,7 @@ export const askCoworkers = async (input:string, id?:string, context?:string[]):
                 Do not let the user know you intend to convince them of the worker's ability, but phrase and shape your response to actively do so.` });
               const prompt = `here is a number of positive feedback that a worker has received at their workplace:${feedback}
               Here is a json file representing the applicant's resume: ${resume}
+              Don't forget to include this project when considering your response: ${projects}
   
               Use this information to answer the question asked by the interested party: ${input}
               Ensure that your answer emphasizes the traits, skills and expectations put forward in the following job description: ${context ? context[2] : ""}

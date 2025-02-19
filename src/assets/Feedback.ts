@@ -54,28 +54,7 @@ Anytime Feedback Given: on Adrien Ventugol from Buder Brigita on 01/19/2023,1/19
 Buder Brigita",,"Having Adrien in the team is a truly blessing. He always listens carefully, asks important questions and gives valuable comments in every meeting and every topic we have. He is the voice in our team. It is very easy to work with him as he quickly understands the requirements and can quickly imagine and suggest the outcomes. Adrien also helps and teaches new joiners and he does it perfectly. Thank you for all great work and Brezen team will definitely miss you a lot!",Team Award
 Anytime Feedback Given: on Adrien Ventugol from Lakshminarayanan Rajendran on 01/11/2023,1/11/2023,"Employee's Photo (Lakshminarayanan Rajendran (On Leave))
 
-Lakshminarayanan Rajendran",,"I wanted to take a moment to recognise the smart work that you have been doing. Be it simple or complex, you are always curious about understanding and experimenting with implementing different ideas. Asking deep questions and helping others in the team, it has been a pleasure working with you Adrien! Thank you for being such an incredible colleague!!",Inspiring
-Anytime Feedback Given: on Adrien Ventugol from Christopha Gordon on 10/21/2022,10/21/2022,"Employee's Photo (Christopha Gordon)
-
-Christopha Gordon","Akanksha Malhotra
-
-David Mansson
-
-Devaki Patil
-
-Emma Dolan
-
-Irene Reiter
-
-Lia Alvarez
-
-Melodie Dumans
-
-Paula Vogelius
-
-Paulina Toczynska","Thank you so much for your support in making the EMEA Black History Month Culture Days a success!! You went above and beyond to make this happen and expose workmates to a unique experience of African and Caribbean culture and cuisine. Hopefully we can do this every year ;)
-
-Thanks a lot!",Culture Champion`}
+Lakshminarayanan Rajendran",,"I wanted to take a moment to recognise the smart work that you have been doing. Be it simple or complex, you are always curious about understanding and experimenting with implementing different ideas. Asking deep questions and helping others in the team, it has been a pleasure working with you Adrien! Thank you for being such an incredible colleague!!",Inspiring`}
 
 export const FeedbackJSON = [
     {

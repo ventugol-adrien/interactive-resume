@@ -4,15 +4,18 @@ import { getJob } from './services/getJob'
 import { Resume } from './components/Resume'
 import { Job } from './types'
 import { memo, useEffect, useState } from 'react'
-import { BrowserRouter, Route, Routes, useParams } from 'react-router-dom'
+import { BrowserRouter, Route, Routes, useLocation, useParams } from 'react-router-dom'
 
 const App:React.FC = () => {
+  console.log(import.meta.env.BASE_URL)
   const [job, setJob] = useState<Job | null>(null)
   
   const JobFetcher: React.FC = () => {
     const { id } = useParams<{ id: string }>()
+    const location = useLocation()
     useEffect(() => {
       const fetchJob = async (id: string) => {
+        console.log("Current URL:", location.pathname)
         if (!job) {
           console.log("Here is the id:", id)
           const fetchedJob: Job = await getJob(id)
