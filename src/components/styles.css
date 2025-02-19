@@ -31,6 +31,16 @@
   button {
     border: 1px solid;
   }
+  .single-line > * {
+    display: inline; /* Or display: inline-block; */
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: none;
+}
+.company {
+  font-weight: bold;
+}
 
   .placeholder {
     color: #777777;

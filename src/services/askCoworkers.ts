@@ -2,7 +2,8 @@ import { SchemaType, GoogleGenerativeAI } from "@google/generative-ai";
 import { FeedbackJSON } from "../assets/Feedback";
 
 export const askCoworkers = async (input:string, id?:string, context?:string[]):Promise<string> => {
-    const baseURL = import.meta.env.DEV ? "https://localhost:8070" : import.meta.env.VITE_SERVER_URL
+    const serverURL = import.meta.env.VITE_SERVER_URL
+    const resume = import.meta.env.VITE_RESUME
     const schema = {
         description: "Theme of the question",
         type: SchemaType.OBJECT,
@@ -27,7 +28,7 @@ export const askCoworkers = async (input:string, id?:string, context?:string[]):
               Example: "How does the engineer handle difficult situations?" -> "Interpersonal skills"`
               const themeResponse = await model1.generateContent(themePrompt)
               const theme = JSON.parse(themeResponse.response.text()).theme
-              fetch(`${baseURL}/spreadsheet/update/${id}`, {
+              fetch(`${serverURL}/spreadsheet/update/${id}`, {
                   method: 'PUT',
                   headers: {
                       'Content-Type': 'application/json',
@@ -36,12 +37,18 @@ export const askCoworkers = async (input:string, id?:string, context?:string[]):
                 })
               const feedback = FeedbackJSON.map((feedback) => feedback.feedback).join("\n")
               const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY);
-              const model2 = genAI.getGenerativeModel({ model: "gemini-1.5-flash", systemInstruction: `You are an assistant tasked with getting the software engineer mentioned in the feedback hired into the following position: ${context ? context[0] : "unknown position"} at ${context ? context[1] : "unknown company"}. Use the feedback to answer any potential questions in a way that convinces the interested party to hire the worker. To this end you must give the impression of being impartial. Do not let the asker know you intend to convince them of the worker's ability, but attempt to do so in a subtil manner. Remember that the asker will not be familiar with many project names and technology, use knowledge of the software industry to explain those terms when possible.` });
+              const model2 = genAI.getGenerativeModel({ model: "gemini-1.5-flash", systemInstruction: `You are an assistant tasked with getting the software engineer mentioned (the applicant) in the feedback hired into the following position:
+                 ${context ? context[0] : "unknown position"} at ${context ? context[1] : "unknown company"}.
+                 Use all the data provided to answer any potential questions, convincing the user to hire the worker.
+                To this end you must give the impression of being impartial.
+                Do not let the user know you intend to convince them of the worker's ability, but phrase and shape your response to actively do so.` });
               const prompt = `here is a number of positive feedback that a worker has received at their workplace:${feedback}
+              Here is a json file representing the applicant's resume: ${resume}
   
               Use this information to answer the question asked by the interested party: ${input}
               Ensure that your answer emphasizes the traits, skills and expectations put forward in the following job description: ${context ? context[2] : ""}
-              Keep your answer succint, maximum 2 paragraphs, but offer potential follow up questions.`
+              Keep your answer succint, maximum 1 paragraph.
+              Ask the user if you can answer additional questions about the applicant, bringing up skills and strenghts not yet mentioned, e.g. "Are you interested in hearing more about Frontend Skills?"`
               const result = await model2.generateContent(prompt);
               return result.response.text()
           }
