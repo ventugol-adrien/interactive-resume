@@ -22,7 +22,7 @@ export const Resume: React.FC<ResumeProps> = ({ job, id }) => {
                 <p>Ask directly about Adrien Ventugol's experience and skills. Get insight into what working with him is like, according to former colleagues' feedback.</p>
             )}
             <p className='disclaimer'>By using this application, you agree to your question potentially being recorded for self-improvement purposes.</p>
-            <div>
+            <div className="cardBox">
                 <ChatCard title={"Ask about Adrien"} clickHandler={askCoworkers} id={id} context={job ? [job.title,job.company,job.description] : undefined} placeholder="Get an answer to your question based on feedback from Adrien's former team."/>
             </div>
         </div>
