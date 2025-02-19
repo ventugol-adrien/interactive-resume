@@ -4,9 +4,7 @@ export const getJob = async (id:string):Promise<Job> => {
     const serverURL = import.meta.env.VITE_SERVER_URL
     try {
         const url = `${serverURL}/job?id=${id}`
-        console.log("Attempting to get job at the following URL:",url, )
-        const response = await fetch(`${serverURL}/job?id=${id}`)
-        console.log("Obtained the following data from the server:", response)
+        const response = await fetch(url)
         return response.json()
 
     } catch (error){

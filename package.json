@@ -9,7 +9,7 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "deploy": "docker build -t latest . && docker tag latest ventugoladrien/interactive-resume:latest && docker push ventugoladrien/interactive-resume:latest && gcloud config configurations activate interactive-resume && gcloud run deploy interactive-resume --image docker.io/ventugoladrien/interactive-resume:latest",
+    "deploy": "docker build --no-cache -t latest . && docker tag latest ventugoladrien/interactive-resume:latest && docker push ventugoladrien/interactive-resume:latest && gcloud config configurations activate interactive-resume && gcloud run deploy interactive-resume --image docker.io/ventugoladrien/interactive-resume:latest",
     "test": "npx vitest run"
   },
   "dependencies": {
