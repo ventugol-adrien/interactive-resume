@@ -9,6 +9,7 @@ export interface Job {
     title: string,
     link:string,
     description: string,
+    favicon?:string
 }
 
 export interface Resume {
