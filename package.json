@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "start": "vite",
-    "dev": "vite",
+    "dev": "set VITE_SERVER_URL=http://localhost:54337&& vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
