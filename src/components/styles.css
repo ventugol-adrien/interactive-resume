@@ -1,23 +1,15 @@
 
-.animated-text {
+  .animated-text {
     display: inline-block;
     white-space: pre-wrap; /* Preserve whitespace and line breaks */
     overflow-y: scroll;
     scrollbar-width: none; /* Hide scrollbar */
     max-height: 12em;
-    min-height: 4em;
-  }
-  
-  .cursor {
+    min-height: 6em;
+    padding: 0.5em 0;
+  }  .cursor {
     animation: blink 1s infinite step-start; /* Cursor blinking animation */
     display: inline-block; /* Ensure cursor is on the same line */
-  }
-  .card {
-    padding: 0em 2em 1.5em 2em;
-    border-radius: 4em;
-    border: #000 solid 1px;
-    width: 500px;
-    box-shadow: #000 3px 3px 2px;
   }
   .cardBox {
     display: flex;
@@ -48,8 +40,10 @@
 }
 
   .placeholder {
-    color: #777777;
+    color: #888888;
     font-size: 1em;
+    font-style: italic;
+    padding: 0.5em 0;
   }
   
   @keyframes blink {
