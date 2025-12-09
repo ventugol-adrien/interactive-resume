@@ -11,7 +11,10 @@ COPY package*.json ./
 RUN npm install
 
 # Copy the project source code
-COPY . .
+COPY package*.json ./
+COPY src ./src
+COPY tsconfig.json ./
+COPY vite.config.ts ./
 
 # Build the application for production
 RUN npm run build

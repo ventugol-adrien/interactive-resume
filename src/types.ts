@@ -9,10 +9,8 @@ export interface Feedbacks {
 
 export const QuestionSchema = z.object({
   question: z.string(),
-  theme: z.string(),
   time: z.string(),
   asker: z.union([z.uuidv4(), z.literal("")]),
-  answer: z.string(),
 });
 
 export type Question = z.infer<typeof QuestionSchema>;
@@ -229,3 +227,31 @@ export const themeAnalyzerSchema: ResponseSchema = {
   required: ["theme"],
   nullable: false,
 };
+
+export const historyRetrieverSchema: ResponseSchema = {
+  description: "Containing Object",
+  type: SchemaType.OBJECT,
+  properties: {
+    indices: {
+      description: "Array containing the most relevant chat history",
+      type: SchemaType.ARRAY,
+      items: {
+        type: SchemaType.INTEGER,
+        description:
+          "integer representing the index of a relevant question/answer pair.",
+        nullable: false,
+      },
+    },
+  },
+};
+export const HighlightCardSchema = z.object({
+  title: z.string(),
+  content: z.string(),
+});
+export type HighlightCard = z.infer<typeof HighlightCardSchema>;
+export const AnswerSchema = z.object({
+  answer: z.string(),
+  highlightCards: z.optional(z.array(HighlightCardSchema).max(4)),
+});
+
+export type Answer = z.infer<typeof AnswerSchema>;

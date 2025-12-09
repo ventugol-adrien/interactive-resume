@@ -9,7 +9,7 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "deploy": "docker build --no-cache -t ventugoladrien/chat-resume:v18 . && docker push ventugoladrien/chat-resume:v18 && gcloud config configurations activate interactive-resume && gcloud run deploy interactive-resume --image docker.io/ventugoladrien/chat-resume:v18",
+    "deploy": "powershell -ExecutionPolicy Bypass -File deploy.ps1",
     "test": "npx vitest run"
   },
   "dependencies": {
