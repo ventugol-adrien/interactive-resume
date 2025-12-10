@@ -14,7 +14,13 @@ RUN npm install
 COPY package*.json ./
 COPY src ./src
 COPY tsconfig.json ./
+COPY tsconfig.app.json ./
+COPY tsconfig.node.json ./
 COPY vite.config.ts ./
+COPY vite-plugin-remove-default-tags.ts ./
+COPY index.html ./
+COPY public ./public
+COPY .env ./
 
 # Build the application for production
 RUN npm run build
