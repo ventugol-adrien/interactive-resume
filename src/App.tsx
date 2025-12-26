@@ -3,6 +3,7 @@ import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { JobFetcher } from "./components/JobFetcher";
 import { MobileProvider } from "./contexts/MobileProvider";
+import { JobProvider } from "./contexts/JobProvider";
 
 const App: React.FC = () => {
   return (
@@ -12,10 +13,12 @@ const App: React.FC = () => {
       </div>
       <MobileProvider>
         <BrowserRouter basename={import.meta.env.BASE_URL}>
-          <Routes>
-            <Route path="/:id" element={<JobFetcher />} />
-            <Route path="/" element={<JobFetcher />} />
-          </Routes>
+          <JobProvider>
+            <Routes>
+              <Route path="/:id" element={<JobFetcher />} />
+              <Route path="/" element={<JobFetcher />} />
+            </Routes>
+          </JobProvider>
         </BrowserRouter>
       </MobileProvider>
     </>

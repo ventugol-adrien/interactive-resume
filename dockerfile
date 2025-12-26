@@ -20,7 +20,6 @@ COPY vite.config.ts ./
 COPY vite-plugin-remove-default-tags.ts ./
 COPY index.html ./
 COPY public ./public
-COPY .env ./
 
 # Build the application for production
 RUN npm run build

@@ -9,10 +9,11 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { HighlightCard, Job } from "../types";
-import { askCoworkers } from "../services/askCoworkers";
+import { Job } from "../types";
+import { askQuestion } from "../services/askCoworkers";
 import { MobileContext } from "../contexts/MobileProvider";
 import { DisplayCard } from "./generic/DisplayCard";
+import { useAxios } from "../hooks/useAxios";
 
 interface ChatCardProps {
   title: string;
@@ -24,31 +25,34 @@ export const ChatCard: React.FC<ChatCardProps> = (props) => {
   const { title, placeholder, job } = props;
   const { isMobile } = useContext(MobileContext);
   const [input, setInput] = useState<string>("");
-  const [response, setResponse] = useState<string>("");
-  const [highlights, setHighlights] = useState<HighlightCard[]>();
+  const [generating, error, response, ask] = useAxios(askQuestion, [
+    input,
+    job,
+  ]);
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value);
   };
-  const ask = async () => {
-    if (input) {
-      console.log("Asking...");
-      setResponse("Generating response...");
-      setHighlights(undefined);
-      const llminput = input;
-      setInput("");
 
-      const result = await askCoworkers(llminput, job);
-      if (result) {
-        const { answer, highlightCards } = result;
-        setResponse(answer);
-        setHighlights(highlightCards);
-      } else {
-        setResponse("Sorry, I couldn't get an answer.");
-      }
-    } else {
-      setResponse("Please ask a question.");
+  const handleTextAnimation = () => {
+    // if generating and no response -> Generating response Animated text
+    // if not generating and no response -> placeholder
+    // if response -> Response
+    if (error) {
+      return (
+        <AnimatedText
+          text={"Sorry, I couldn't answer that, please try again later."}
+        />
+      );
     }
+    if (generating && !response) {
+      return <AnimatedText text={"Generating answer..."} />;
+    } else if (!generating && !response) {
+      return <p className="placeholder"> {placeholder}</p>;
+    } else if (response) {
+      return <AnimatedText text={response.answer} />;
+    }
+    return <p className="placeholder"> {placeholder}</p>;
   };
 
   return (
@@ -72,13 +76,7 @@ export const ChatCard: React.FC<ChatCardProps> = (props) => {
       >
         <CardContent>
           <Typography variant="h3">{title}</Typography>
-          <Typography variant="body1">
-            {response ? (
-              <AnimatedText text={response} />
-            ) : (
-              <p className="placeholder"> {placeholder}</p>
-            )}
-          </Typography>
+          <Typography variant="body1">{handleTextAnimation()}</Typography>
           <Typography
             component="div"
             sx={{
@@ -121,19 +119,28 @@ export const ChatCard: React.FC<ChatCardProps> = (props) => {
           width: isMobile ? "90vw" : "1200px",
           display: "flex",
           flexDirection: isMobile ? "column" : "row",
+          opacity: generating || response ? 1 : 0,
+          transform:
+            generating || response ? "translateY(0)" : "translateY(30px)",
+          transition: "all ease-in-out 0.5s",
+
           justifyContent: "space-evenly",
         }}
       >
-        {highlights
-          ? highlights.map(({ title, content }, index) => (
+        {response?.highlightCards
+          ? response?.highlightCards.map(({ title, content }, index) => (
               <DisplayCard
                 key={index}
                 title={title}
                 content={content}
                 sx={{
-                  width: Math.floor(100 / (highlights.length + 1)) + "%",
+                  width:
+                    Math.floor(
+                      100 / ((response?.highlightCards?.length || 0) + 1)
+                    ) + "%",
                   padding: "1em 1.5em 1.5em 1.5em",
                   borderRadius: "0.5em",
+                  animation: "ease-in-out 3s",
                 }}
               />
             ))
@@ -141,18 +148,23 @@ export const ChatCard: React.FC<ChatCardProps> = (props) => {
               { title: <Skeleton />, content: <Skeleton /> },
               { title: <Skeleton />, content: <Skeleton /> },
               { title: <Skeleton />, content: <Skeleton /> },
-            ].map(({ title, content }, index) => (
-              <DisplayCard
-                key={index}
-                title={title}
-                content={content}
-                sx={{
-                  width: Math.floor(100 / 4) + "%",
-                  padding: "1em 1.5em 1.5em 1.5em",
-                  borderRadius: "0.5em",
-                }}
-              />
-            ))}
+            ].map(({ title, content }, index) => {
+              if (generating) {
+                return (
+                  <DisplayCard
+                    key={index}
+                    title={title}
+                    content={content}
+                    sx={{
+                      width: Math.floor(100 / 4) + "%",
+                      padding: "1em 1.5em 1.5em 1.5em",
+                      borderRadius: "0.5em",
+                      animation: "ease-in-out 3s",
+                    }}
+                  />
+                );
+              }
+            })}
       </Box>
     </Box>
   );

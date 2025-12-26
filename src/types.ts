@@ -11,6 +11,7 @@ export const QuestionSchema = z.object({
   question: z.string(),
   time: z.string(),
   asker: z.union([z.uuidv4(), z.literal("")]),
+  resume: z.optional(z.union([z.uuidv4(), z.literal("")])),
 });
 
 export type Question = z.infer<typeof QuestionSchema>;

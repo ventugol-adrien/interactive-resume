@@ -1,14 +1,18 @@
+import { useContext } from "react";
 import { Job } from "../types";
 import { ChatCard } from "./ChatCard";
+import { JobContext } from "../contexts/JobProvider";
+import { Box } from "@mui/material";
 
 interface ResumeProps {
   job?: Job;
 }
 
-export const Resume: React.FC<ResumeProps> = ({ job }) => {
+export const Resume: React.FC<ResumeProps> = () => {
+  const { job } = useContext(JobContext);
   const { title, company, link } = job || {};
   return (
-    <div>
+    <Box>
       {job ? (
         <div className="single-line">
           <p>
@@ -38,6 +42,6 @@ export const Resume: React.FC<ResumeProps> = ({ job }) => {
           placeholder="Get an answer to your question based on feedback from Adrien's former team."
         />
       </div>
-    </div>
+    </Box>
   );
 };
