@@ -10,6 +10,8 @@ import { Job, Resume } from "../types";
 import { useParams } from "react-router-dom";
 import { getJob } from "../services/jobs";
 import { getResume } from "../services/resumes";
+import { useAxios } from "../hooks/useAxios";
+import { CircularProgress } from "@mui/material";
 
 export const JobContext = createContext<{
   job?: Job;
@@ -25,6 +27,7 @@ const BaseJobProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const { id } = useParams<{ id: string }>();
   const [job, setJob] = useState<Job>();
   const [resume, setResume] = useState<Resume>();
+  const [loading, _, jobData, call] = useAxios(getJob, [id as string]);
   const setFavicon = useCallback((faviconUrl: string | undefined) => {
     const link: HTMLLinkElement | null =
       document.querySelector('link[rel="icon"]');
@@ -42,29 +45,43 @@ const BaseJobProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   );
 
   useEffect(() => {
-    console.log("Job Context use effect running...");
-    const fetchJob = async (id: string) => {
+    if (id) {
       console.log("Fetching job...");
-      const fetchedJob = await getJob(id);
-      setJob(fetchedJob);
-      if (fetchedJob.resume) {
-        const fetchedResume = await getResume(fetchedJob.resume);
-        setResume(fetchedResume);
+      call();
+    }
+  }, [id]);
+
+  useEffect(() => {
+    const processJobData = async () => {
+      if (jobData) {
+        console.log("Job data received:", jobData);
+        setJob(jobData);
+
+        if (jobData.resume) {
+          const fetchedResume = await getResume(jobData.resume);
+          setResume(fetchedResume);
+          const { company, favicon } = jobData;
+          document.title = `Adrien X ${company}`;
+          setFavicon(favicon);
+        }
       }
-      const { company, favicon } = fetchedJob;
-      document.title = `Adrien X ${company}`;
-      setFavicon(favicon);
     };
 
-    if (id) {
-      fetchJob(id);
-    }
-  }, [id, setFavicon]);
+    processJobData();
+  }, [jobData, setFavicon]);
 
   return (
     <JobContext.Provider
       value={{ job: job, resume: resume, updateContext: handleContextUpdate }}
     >
+      {" "}
+      {loading ? (
+        <>
+          <CircularProgress /> Loading position data...
+        </>
+      ) : (
+        ""
+      )}{" "}
       {children}
     </JobContext.Provider>
   );
