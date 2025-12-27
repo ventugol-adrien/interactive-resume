@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useCallback, useContext, useState } from "react";
 import AnimatedText from "./AnimatedText";
 import {
   Box,
@@ -14,6 +14,7 @@ import { askQuestion } from "../services/askCoworkers";
 import { MobileContext } from "../contexts/MobileProvider";
 import { DisplayCard } from "./generic/DisplayCard";
 import { useAxios } from "../hooks/useAxios";
+import { Modal } from "./generic/Modal";
 
 interface ChatCardProps {
   title: string;
@@ -25,6 +26,7 @@ export const ChatCard: React.FC<ChatCardProps> = (props) => {
   const { title, placeholder, job } = props;
   const { isMobile } = useContext(MobileContext);
   const [input, setInput] = useState<string>("");
+  const [isModalVisible, setModalVisibility] = useState<boolean>(false);
   const [generating, error, response, ask] = useAxios(askQuestion, [
     input,
     job,
@@ -55,6 +57,46 @@ export const ChatCard: React.FC<ChatCardProps> = (props) => {
     return <p className="placeholder"> {placeholder}</p>;
   };
 
+  const handleLearnMore = useCallback(
+    async (title: string, content: string) => {
+      const learnMoreQuestion = `Tell me more about this topic:${title} and expand upon this content: ${content}`;
+      await ask([learnMoreQuestion, job]);
+    },
+    [ask]
+  );
+
+  const createChatbox = () => (
+    <Box sx={{ display: "flex", gap: "12px" }}>
+      <TextField
+        sx={{
+          flex: 1,
+          minWidth: isMobile ? "70vw" : "70%",
+          "& .MuiOutlinedInput-root": {
+            borderRadius: "8px",
+          },
+        }}
+        value={input}
+        onChange={handleInput}
+        placeholder="Ask a question"
+        size="small"
+        multiline
+        minRows={isMobile ? 5 : 2}
+      />
+      {isModalVisible ? null : (
+        <Button
+          onClick={() => ask([input, job])}
+          variant="contained"
+          sx={{
+            minWidth: isMobile ? "80vw" : "120px",
+            borderRadius: "8px",
+          }}
+        >
+          <Typography component="div"> Ask</Typography>
+        </Button>
+      )}
+    </Box>
+  );
+
   return (
     <Box
       sx={{
@@ -69,7 +111,7 @@ export const ChatCard: React.FC<ChatCardProps> = (props) => {
           padding: "1.5em 2em 2em 2em",
           borderRadius: "3.5em",
           border: " #000 solid 1px",
-          width: isMobile ? "90vw" : "500px",
+          width: isMobile ? "90vw" : "800px",
           boxShadow: " #000 2px 2px 8px",
           background: "#ffffff",
         }}
@@ -77,8 +119,21 @@ export const ChatCard: React.FC<ChatCardProps> = (props) => {
         <CardContent>
           <Typography variant="h3">{title}</Typography>
           <Typography variant="body1">{handleTextAnimation()}</Typography>
-          <Typography
-            component="div"
+          {isMobile ? (
+            <Button
+              onClick={() => setModalVisibility(true)}
+              variant="contained"
+              sx={{
+                minWidth: isMobile ? "80vw" : "80px",
+                borderRadius: "8px",
+              }}
+            >
+              Ask
+            </Button>
+          ) : (
+            createChatbox()
+          )}
+          <Box
             sx={{
               display: "flex",
               flexDirection: "row",
@@ -88,37 +143,16 @@ export const ChatCard: React.FC<ChatCardProps> = (props) => {
               gap: "12px",
               marginTop: "16px",
             }}
-          >
-            <TextField
-              sx={{
-                flex: 1,
-                "& .MuiOutlinedInput-root": {
-                  borderRadius: "8px",
-                },
-              }}
-              value={input}
-              onChange={handleInput}
-              placeholder="Ask a question"
-              size="small"
-            />
-            <Button
-              onClick={ask}
-              variant="contained"
-              sx={{
-                minWidth: isMobile ? "80vw" : "80px",
-                borderRadius: "8px",
-              }}
-            >
-              Ask
-            </Button>
-          </Typography>
+          ></Box>
         </CardContent>
       </Card>
       <Box
         sx={{
           width: isMobile ? "90vw" : "1200px",
           display: "flex",
+          gap: "12px",
           flexDirection: isMobile ? "column" : "row",
+          alignItems: isMobile ? "center" : "stretch",
           opacity: generating || response ? 1 : 0,
           transform:
             generating || response ? "translateY(0)" : "translateY(30px)",
@@ -132,12 +166,23 @@ export const ChatCard: React.FC<ChatCardProps> = (props) => {
               <DisplayCard
                 key={index}
                 title={title}
-                content={content}
+                content={
+                  <>
+                    <Typography component="p">{content}</Typography>
+                    <Button
+                      sx={{ justifySelf: "baseline" }}
+                      onClick={() => handleLearnMore(title, content)}
+                    >
+                      Learn More
+                    </Button>
+                  </>
+                }
                 sx={{
-                  width:
-                    Math.floor(
-                      100 / ((response?.highlightCards?.length || 0) + 1)
-                    ) + "%",
+                  width: isMobile
+                    ? "70vw"
+                    : Math.floor(
+                        100 / ((response?.highlightCards?.length || 0) + 1)
+                      ) + "%",
                   padding: "1em 1.5em 1.5em 1.5em",
                   borderRadius: "0.5em",
                   animation: "ease-in-out 3s",
@@ -166,6 +211,22 @@ export const ChatCard: React.FC<ChatCardProps> = (props) => {
               }
             })}
       </Box>
+      <Modal
+        sx={{ minWidth: "70vw", minHeight: "70vh" }}
+        open={isModalVisible && isMobile}
+        actions={[
+          {
+            onClick: async () => {
+              setModalVisibility(false);
+              await ask();
+            },
+            children: "Send",
+            sx: { width: "30vw", height: "5vh" },
+          },
+        ]}
+      >
+        {createChatbox()}
+      </Modal>
     </Box>
   );
 };

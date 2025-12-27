@@ -20,6 +20,7 @@ const BaseDisplayCard: React.FC<DisplayCardProps> = ({
             display: "flex",
             flexDirection: "column",
             justifyContent: "space-around",
+            gap: "8px",
           }}
         >
           {title ? <Typography variant="h6">{title}</Typography> : ""}
